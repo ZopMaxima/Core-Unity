@@ -16,11 +16,19 @@ namespace Zop.Unity
 	[CustomEditor(typeof(Transform), true), CanEditMultipleObjects]
 	class TransformEditor : Editor
 	{
+		private const string FALLBACK_ARROW = "\u2190";
+		private const string TOOLTIP_RESET_POSITION = "Reset Position";
+		private const string TOOLTIP_RESET_ROTATION = "Reset Rotation";
+		private const string TOOLTIP_RESET_SCALE = "Reset Scale";
+
 		private Texture2D _resetTexture;
 		private SerializedProperty _localPosition;
 		private SerializedProperty _localRotation;
 		private SerializedProperty _localScale;
 		private object _rotationGUI;
+		private GUIContent _buttonContentP;
+		private GUIContent _buttonContentR;
+		private GUIContent _buttonContentS;
 
 		/// <summary>
 		/// Cache properties.
@@ -29,7 +37,7 @@ namespace Zop.Unity
 		{
 			if (serializedObject != null)
 			{
-				_resetTexture = (Texture2D)AssetDatabase.LoadAssetAtPath("Assets/Editor/Revert.png", typeof(Texture2D));
+				_resetTexture = (Texture2D)Resources.Load("EditorRevert", typeof(Texture2D));
 				_localPosition = serializedObject.FindProperty("m_LocalPosition");
 				_localRotation = serializedObject.FindProperty("m_LocalRotation");
 				_localScale = serializedObject.FindProperty("m_LocalScale");
@@ -38,6 +46,9 @@ namespace Zop.Unity
 					_rotationGUI = System.Activator.CreateInstance(typeof(SerializedProperty).Assembly.GetType("UnityEditor.TransformRotationGUI", false, false));
 				}
 				_rotationGUI.GetType().GetMethod("OnEnable").Invoke(_rotationGUI, new object[] { _localRotation, new GUIContent("Rotation") });
+				_buttonContentP = _resetTexture != null ? new GUIContent(_resetTexture, TOOLTIP_RESET_POSITION) : new GUIContent(FALLBACK_ARROW, TOOLTIP_RESET_POSITION);
+				_buttonContentR = _resetTexture != null ? new GUIContent(_resetTexture, TOOLTIP_RESET_ROTATION) : new GUIContent(FALLBACK_ARROW, TOOLTIP_RESET_ROTATION);
+				_buttonContentS = _resetTexture != null ? new GUIContent(_resetTexture, TOOLTIP_RESET_SCALE) : new GUIContent(FALLBACK_ARROW, TOOLTIP_RESET_SCALE);
 			}
 		}
 
@@ -53,7 +64,7 @@ namespace Zop.Unity
 
 				// Position
 				EditorGUILayout.BeginHorizontal();
-				if (GUILayout.Button(new GUIContent(_resetTexture, "Reset Position"), EditorStyles.miniButtonLeft, GUILayout.Width(19)))
+				if (GUILayout.Button(_buttonContentP, EditorStyles.miniButtonLeft, GUILayout.Width(19)))
 				{
 					_localPosition.vector3Value = Vector3.zero;
 				}
@@ -62,7 +73,7 @@ namespace Zop.Unity
 
 				// Rotation
 				EditorGUILayout.BeginHorizontal();
-				if (GUILayout.Button(new GUIContent(_resetTexture, "Reset Rotation"), EditorStyles.miniButtonLeft, GUILayout.Width(19)))
+				if (GUILayout.Button(_buttonContentR, EditorStyles.miniButtonLeft, GUILayout.Width(19)))
 				{
 					_localRotation.quaternionValue = Quaternion.identity;
 				}
@@ -71,7 +82,7 @@ namespace Zop.Unity
 
 				// Scale
 				EditorGUILayout.BeginHorizontal();
-				if (GUILayout.Button(new GUIContent(_resetTexture, "Reset Scale"), EditorStyles.miniButtonLeft, GUILayout.Width(19)))
+				if (GUILayout.Button(_buttonContentS, EditorStyles.miniButtonLeft, GUILayout.Width(19)))
 				{
 					_localScale.vector3Value = Vector3.one;
 				}
