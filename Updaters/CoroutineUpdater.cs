@@ -15,12 +15,12 @@ namespace Zop
 	/// </summary>
 	public class CoroutineUpdater : MonoSingleton<Coroutine>
 	{
-		public FullAction OnFixedUpdate;
-		public FullAction OnCoroutineFixedUpdate;
-		public FullAction OnUpdate;
-		public FullAction OnCoroutineUpdate;
-		public FullAction OnLateUpdate;
-		public FullAction OnEndOfFrame;
+		public readonly FullAction OnFixedUpdate = new FullAction();
+		public readonly FullAction OnCoroutineFixedUpdate = new FullAction();
+		public readonly FullAction OnUpdate = new FullAction();
+		public readonly FullAction OnCoroutineUpdate = new FullAction();
+		public readonly FullAction OnLateUpdate = new FullAction();
+		public readonly FullAction OnEndOfFrame = new FullAction();
 
 		private static readonly WaitForFixedUpdate _waitFixed = new WaitForFixedUpdate();
 		private static readonly WaitForEndOfFrame _waitEndOfFrame = new WaitForEndOfFrame();
