@@ -49,12 +49,15 @@ namespace Zop.Unity
 		/// </summary>
 		public void OnDrawGizmos()
 		{
-			for (int i = 0; i < Instantiations.Length; i++)
+			if (Instantiations != null)
 			{
-				Parameters p = Instantiations[i];
-				if (p != null)
+				for (int i = 0; i < Instantiations.Length; i++)
 				{
-					Instantiator.DrawTransformGizmo(p.Prefab, p.Parent, p.Position, p.Rotation, p.LocalSpace);
+					Parameters p = Instantiations[i];
+					if (p != null)
+					{
+						Instantiator.DrawTransformGizmo(p.Prefab, p.Parent, p.Position, p.Rotation, p.LocalSpace);
+					}
 				}
 			}
 		}
