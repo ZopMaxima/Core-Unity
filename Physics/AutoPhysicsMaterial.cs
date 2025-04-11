@@ -16,6 +16,10 @@ namespace Zop.Unity
 	{
 		public string Name;
 		public float Density;
+#if UNITY_6000_0_OR_NEWER
+		public PhysicsMaterial Material;
+#else
 		public PhysicMaterial Material;
+#endif
 	}
 }
