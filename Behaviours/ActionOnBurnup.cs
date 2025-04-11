@@ -48,7 +48,11 @@ namespace Zop.Unity
 		{
 			if (!_isBurned)
 			{
+#if UNITY_6000_0_OR_NEWER
+				Vector3 velocity = (_is2D && _rigidbody2D != null) ? (_rigidbody2D.linearVelocity) : (_rigidbody != null) ? (_rigidbody.linearVelocity) : (Vector3.zero);
+#else
 				Vector3 velocity = (_is2D && _rigidbody2D != null) ? (_rigidbody2D.velocity) : (_rigidbody != null) ? (_rigidbody.velocity) : (Vector3.zero);
+#endif
 				if (velocity.sqrMagnitude > MAX_VELOCITY_SQR)
 				{
 					_isBurned = true;
